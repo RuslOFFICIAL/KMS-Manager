@@ -100,4 +100,4 @@ fi
 echo -e "\nKMS Server has been successfully set up and started!"
 echo -e "\nYour KMS IPv4 is: $(hostname -I | awk '{print $1}')"
 
-read -s -p "Press [Enter] to continue..." && echo && exit 0
+read -s -p $'Press [Enter] to continue...\n' && exit 0
