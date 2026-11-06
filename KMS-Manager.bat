@@ -15,7 +15,7 @@ REM Get ready.
 :GetReady
 
 REM Variables.
-set "Version=1.0.1"
+set "Version=1.0.2"
 set "KeysFileName=KMS-Keys.conf"
 set "KeysFile=%KeysFileName%"
 
