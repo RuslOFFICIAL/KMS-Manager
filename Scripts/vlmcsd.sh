@@ -3,7 +3,21 @@
 cd "$(dirname "$0")" || exit
 
 # Variables.
-CONFIG_FILE="Variables.conf"
+VARIABLES_FILE_NAME="Variables.conf"
+VARIABLES_FILE="../Configs/$VARIABLES_FILE_NAME"
+ENV_FILE_NAME=".env"
+ENV_FILE="../Configs/$ENV_FILE_NAME"
+
+# Configs.
+if [ -f "$VARIABLES_FILE" ]; then
+	while IFS='=' read -r key value; do
+		[[ "$key" =~ ^#.* ]] || [[ -z "$key" ]] && continue
+		clean_value="${value%$'\r'}"
+		export "$key=$clean_value"
+	done < "$VARIABLES_FILE"
+else
+	echo "[WARNING]: File not found at '$VARIABLES_FILE'!" && echo -e "Check if there is that file or download it from the repository!\n"
+fi
 
 # Admin check.
 if [ "$EUID" -ne 0 ]; then
@@ -11,6 +25,18 @@ if [ "$EUID" -ne 0 ]; then
 	echo "Try running command: sudo bash \"vlmcsd.sh\""
 	read -s -p "Press [Enter] to continue..." && exit 1
 fi
+
+echo -e "vlmcsd $vlmcsd_Version\n"
+
+# Confirmation.
+while true; do
+	read -r -e -p "Run this script? (Y/N) " confirmation
+	case "$confirmation" in
+		[Yy]* ) echo; break ;;
+		[Nn]* ) echo -e "\nOperation cancelled by user.\n"; read -s -p "Press [Enter] to continue..."; exit 0 ;;
+		* ) echo -e "Please answer Y or n.\n" ;;
+	esac
+done
 
 echo "Starting KMS Server Setup..."
 
@@ -59,18 +85,18 @@ fi
 # Automatically update config file.
 cd "$(dirname "$0")" || exit
 
-if [ -f "$CONFIG_FILE" ]; then
+if [ -f "$ENV_FILE" ]; then
 	KMS_IP=$(hostname -I | awk '{print $1}')
 	if [ -n "$KMS_IP" ]; then
-		if grep -q "^KMS_Server=" "$CONFIG_FILE"; then
-			sed -i "s/^KMS_Server=.*/KMS_Server=$KMS_IP/" "$CONFIG_FILE"
+		if grep -q "^KMS_Server=" "$ENV_FILE"; then
+			sed -i "s/^KMS_Server=.*/KMS_Server=$KMS_IP/" "$ENV_FILE"
 		else
-			echo "KMS_Server=$KMS_IP" >> "$CONFIG_FILE"
+			echo "KMS_Server=$KMS_IP" >> "$ENV_FILE"
 		fi
-		echo -e "\nSuccessfully updated $CONFIG_FILE with 'KMS_Server=$KMS_IP'"
+		echo -e "\nSuccessfully updated $ENV_FILE with 'KMS_Server=$KMS_IP'"
 	fi
 else
-	echo -e "\nWARNING: $CONFIG_FILE not found in this directory, skipping config update."
+	echo -e "\nWARNING: $ENV_FILE not found in this directory, skipping config update."
 fi
 
 # Check if vlmcsd is already installed
