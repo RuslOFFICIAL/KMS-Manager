@@ -26,30 +26,31 @@ REM Configs.
 if exist "%VariablesFile%" (
 	for /f "usebackq eol=# tokens=1,2 delims==" %%A in ("%VariablesFile%") do set "%%A=%%~B"
 ) else (
-	echo [WARNING]: File not found at '%VariablesFile%'! & echo Check if you have that file or download it from GitHub repository! & echo.
+	echo [WARNING]: File not found at '%VariablesFile%'! & echo Check if there is that file or download it from GitHub repository! & echo.
 )
 
 if exist "%EnvFile%" (
 	for /f "usebackq eol=# tokens=1,2 delims==" %%A in ("%EnvFile%") do set "%%A=%%~B"
 ) else (
-	echo [WARNING]: File not found at '%EnvFile%'! & echo Check if you have that file or download it from GitHub repository! & echo.
+	echo [FATAL]: File not found at '%EnvFile%'! & echo Check if there is that file or make it via 'vlmcsd.sh' or '.env.example'! & echo.
+	pause& echo.& exit
 )
 
 if exist "%KeysFile%" (
 	for /f "usebackq eol=# tokens=1,2 delims==" %%A in ("%KeysFile%") do set "%%A=%%~B"
 ) else (
-	echo [FATAL]: File not found at '%KeysFile%'! & echo Check if you have that file or download it from GitHub repository! & echo.
+	echo [FATAL]: File not found at '%KeysFile%'! & echo Check if there is that file or download it from GitHub repository! & echo.
 	pause& echo.& exit
 )
 
 REM GVLK Key.
 :GVLK
 echo.&echo KMS-Manager %KMS_Manager_Version%& echo.
-echo For which Windows Edition do you need the GVLK Key?
+echo For which Windows Edition needed GVLK Key?
 echo [1] Windows Client& echo [2] Windows Server
 echo.
 
-choice /c 12 /n /m "Enter your choice (1, 2): "
+choice /c 12 /n /m "Enter the choice (1, 2): "
 if %errorlevel%==2 goto WinServer
 if %errorlevel%==1 goto WinClient
 
@@ -58,7 +59,7 @@ echo.
 echo [1] Windows 11/10& echo [2] Windows Enterprise LTSC/LTSB& echo [3] Windows Enterprise IoT LTSC 2024/2021& echo [4] Windows Client Earlier Versions (8.1, 8, 7, Vista)
 echo.
 
-choice /c 1234 /n /m "Enter your choice (1, 2, 3, 4): "
+choice /c 1234 /n /m "Enter the choice (1, 2, 3, 4): "
 if %errorlevel%==4 goto WinClientEarly
 if %errorlevel%==3 set "GVLKKey=%Client_Enterprise_IoT_LTSClient_2024_2021%"& goto KMS
 if %errorlevel%==2 goto WinClientEnterpriseLTSCB
@@ -69,7 +70,7 @@ echo.
 echo [1] Windows 11 LTSC 2024 / Windows 10 LTSC 2021, 2019& echo [2] Windows 10 LTSB 2016 & echo [3] Windows 10 LTSB 2015
 echo.
 
-choice /c 123456 /n /m "Enter your choice (1, 2, 3, 4, 5, 6): "
+choice /c 123456 /n /m "Enter the choice (1, 2, 3, 4, 5, 6): "
 if %errorlevel%==3 goto WinClient102015
 if %errorlevel%==2 goto WinClient102016
 if %errorlevel%==1 goto WinClient1110LTSC
@@ -79,7 +80,7 @@ echo.
 echo [1] Windows 8.1& echo [2] Windows 8&echo [3] Windows 7& echo [4] Windows Vista
 echo.
 
-choice /c 123456 /n /m "Enter your choice (1, 2, 3, 4, 5, 6): "
+choice /c 123456 /n /m "Enter the choice (1, 2, 3, 4, 5, 6): "
 if %errorlevel%==4 goto WinClientVista
 if %errorlevel%==3 goto WinClient7
 if %errorlevel%==2 goto WinClient8
@@ -90,7 +91,7 @@ echo.
 echo [1] Windows Vista Business& echo [2] Windows Vista Business N&echo [3] Windows Vista Enterprise& echo [4] Windows Vista Enterprise N
 echo.
 
-choice /c 1234 /n /m "Enter your choice (1, 2, 3, 4): "
+choice /c 1234 /n /m "Enter the choice (1, 2, 3, 4): "
 if %errorlevel%==4 set "GVLKKey=%Client_Enterprise_N_Vista%"& goto KMS
 if %errorlevel%==3 set "GVLKKey=%Client_Enterprise_Vista%"& goto KMS
 if %errorlevel%==2 set "GVLKKey=%Client_BusinesServer_N_Vista%"& goto KMS
@@ -101,7 +102,7 @@ echo.
 echo [1] Windows 7 Professional& echo [2] Windows 7 Professional N&echo [3] Windows 7 Professional E&echo [4] Windows 7 Enterprise& echo [5] Windows 7 Enterprise N& echo [6] Windows 7 Enterprise E
 echo.
 
-choice /c 123456 /n /m "Enter your choice (1, 2, 3, 4, 5, 6): "
+choice /c 123456 /n /m "Enter the choice (1, 2, 3, 4, 5, 6): "
 if %errorlevel%==6 set "GVLKKey=%Client_Enterprise_E_7%"& goto KMS
 if %errorlevel%==5 set "GVLKKey=%Client_Enterprise_N_7%"& goto KMS
 if %errorlevel%==4 set "GVLKKey=%Client_Enterprise_7%"& goto KMS
@@ -114,7 +115,7 @@ echo.
 echo [1] Windows 8 Pro& echo [2] Windows 8 Pro N&echo [3] Windows 8 Enterprise& echo [4] Windows 8 Enterprise N
 echo.
 
-choice /c 1234 /n /m "Enter your choice (1, 2, 3, 4): "
+choice /c 1234 /n /m "Enter the choice (1, 2, 3, 4): "
 if %errorlevel%==4 set "GVLKKey=%Client_Enterprise_N_8%"& goto KMS
 if %errorlevel%==3 set "GVLKKey=%Client_Enterprise_8%"& goto KMS
 if %errorlevel%==2 set "GVLKKey=%Client_Pro_N_8%"& goto KMS
@@ -125,7 +126,7 @@ echo.
 echo [1] Windows 8.1 Pro& echo [2] Windows 8.1 Pro N&echo [3] Windows 8.1 Enterprise& echo [4] Windows 8.1 Enterprise N
 echo.
 
-choice /c 1234 /n /m "Enter your choice (1, 2, 3, 4): "
+choice /c 1234 /n /m "Enter the choice (1, 2, 3, 4): "
 if %errorlevel%==4 set "GVLKKey=%Client_Enterprise_N_81%"& goto KMS
 if %errorlevel%==3 set "GVLKKey=%Client_Enterprise_81%"& goto KMS
 if %errorlevel%==2 set "GVLKKey=%Client_Pro_N_81%"& goto KMS
@@ -136,7 +137,7 @@ echo.
 echo [1] Windows 10 Enterprise LTSB 2015& echo [2] Windows 10 Enterprise N LTSB 2015
 echo.
 
-choice /c 12 /n /m "Enter your choice (1, 2): "
+choice /c 12 /n /m "Enter the choice (1, 2): "
 if %errorlevel%==2 set "GVLKKey=%Client_Enterprise_LTSB_N_10_2015%"& goto KMS
 if %errorlevel%==1 set "GVLKKey=%Client_Enterprise_LTSB_10_2015%"& goto KMS
 
@@ -145,7 +146,7 @@ echo.
 echo [1] Windows 10 Enterprise LTSB 2016& echo [2] Windows 10 Enterprise N LTSB 2016
 echo.
 
-choice /c 12 /n /m "Enter your choice (1, 2): "
+choice /c 12 /n /m "Enter the choice (1, 2): "
 if %errorlevel%==2 set "GVLKKey=%Client_Enterprise_LTSB_N_10_2016%"& goto KMS
 if %errorlevel%==1 set "GVLKKey=%Client_Enterprise_LTSB_10_2016%"& goto KMS
 
@@ -154,7 +155,7 @@ echo.
 echo [1] Windows 11 Enterprise LTSC 2024 / Windows 10 Enterprise LTSC 2021/2019& echo [2] Windows 11 Enterprise N LTSC 2024 / Windows 10 Enterprise N LTSC 2021/2019
 echo.
 
-choice /c 12 /n /m "Enter your choice (1, 2): "
+choice /c 12 /n /m "Enter the choice (1, 2): "
 if %errorlevel%==2 set "GVLKKey=%Client_Enterprise_LTSClient_N_11_2024_10_2021_2019%"& goto KMS
 if %errorlevel%==1 set "GVLKKey=%Client_Enterprise_LTSClient_11_2024_10_2021_2019%"& goto KMS
 
@@ -163,7 +164,7 @@ echo.
 echo [1] Windows 11/10 Pro& echo [2] Windows 11/10 Pro N& echo [3] Windows 11/10 Pro for Workstations& echo [4] Windows 11/10 Pro for Workstations N& echo [5] Windows 11/10 Pro Education& echo [6] Windows 11/10 Pro Education N& echo [7] Windows 11/10 Education& echo [8] Windows 11/10 Education N& echo [9] Windows 11/10 Enterprise& echo [a] Windows 11/10 Enterprise N& echo [b] Windows 11/10 Enterprise G& echo [c] Windows 11/10 Enterprise G N
 echo.
 
-choice /c 123456789abc /n /m "Enter your choice (1, 2, 3, 4, 5, 6, 7, 8, 9, a, b, c): "
+choice /c 123456789abc /n /m "Enter the choice (1, 2, 3, 4, 5, 6, 7, 8, 9, a, b, c): "
 if %errorlevel%==12 set "GVLKKey=%Client_Enterprise_G_N_11_10%"& goto KMS
 if %errorlevel%==11 set "GVLKKey=%Client_Enterprise_G_11_10%"& goto KMS
 if %errorlevel%==10 set "GVLKKey=%Client_Enterprise_N_11_10%"& goto KMS
@@ -184,7 +185,7 @@ echo.
 echo [1] Windows Server 2025& echo [2] Windows Server 2022& echo [3] Windows Server 2019& echo [4] Windows Server 2016& echo [5] Windows Server Semi-Annual Channel (20H2, 2004, 1909, 1903, 1809)& echo [6] Windows Server Earlier Versions (1803, 1709, 2012 R2, 2012, 2008 R2, 2008)
 echo.
 
-choice /c 123456 /n /m "Enter your choice (1, 2, 3, 4, 5, 6): "
+choice /c 123456 /n /m "Enter the choice (1, 2, 3, 4, 5, 6): "
 if %errorlevel%==6 goto WinServerEarly
 if %errorlevel%==5 goto WinServerSA
 if %errorlevel%==4 goto WinServer2016
@@ -197,7 +198,7 @@ echo.
 echo [1] Windows Server 1803& echo [2] Windows Server 1709&echo [3] Windows Server 2012 R2& echo [4] Windows Server 2012& echo [5] Windows Server 2008 R2& echo [6] Windows Server 2008 
 echo.
 
-choice /c 123456 /n /m "Enter your choice (1, 2, 3, 4, 5, 6): "
+choice /c 123456 /n /m "Enter the choice (1, 2, 3, 4, 5, 6): "
 if %errorlevel%==6 goto WinServer2008
 if %errorlevel%==5 goto WinServer2008R2
 if %errorlevel%==4 goto WinServer2012
@@ -210,7 +211,7 @@ echo.
 echo [1] Windows Server Standard& echo [2] Windows Server Datacenter
 echo.
 
-choice /c 12 /n /m "Enter your choice (1, 2): "
+choice /c 12 /n /m "Enter the choice (1, 2): "
 if %errorlevel%==2 set "GVLKKey=%Server_SA_Datacenter%"& goto KMS
 if %errorlevel%==1 set "GVLKKey=%Server_SA_Standard%"& goto KMS
 
@@ -219,7 +220,7 @@ echo.
 echo [1] Windows Web Server 2008& echo [2] Windows Server 2008 Standard& echo [3] Windows Server 2008 Standard without Hyper-V& echo [4] Windows Server 2008 Enterprise& echo [5] Windows Server 2008 Enterprise without Hyper-V& echo [6] Windows Server 2008 HPC& echo [7] Windows Server 2008 Datacenter& echo [8] Windows Server 2008 Datacenter without Hyper-V& echo [9] Windows Server 2008 for Itanium-based Systems
 echo.
 
-choice /c 123456789 /n /m "Enter your choice (1, 2, 3, 4, 5, 6, 7, 8, 9): "
+choice /c 123456789 /n /m "Enter the choice (1, 2, 3, 4, 5, 6, 7, 8, 9): "
 if %errorlevel%==9 set "GVLKKey=%Server_Itanium_2008%"& goto KMS
 if %errorlevel%==8 set "GVLKKey=%Server_Datacenter_WHV_2008%"& goto KMS
 if %errorlevel%==7 set "GVLKKey=%Server_Datacenter_2008%"& goto KMS
@@ -235,7 +236,7 @@ echo.
 echo [1] Windows Server 2008 R2 Web& echo [2] Windows Server 2008 R2 HPC Edition& echo [3] Windows Server 2008 R2 Standard& echo [4] Windows Server 2008 R2 Enterprise& echo [5] Windows Server 2008 R2 Datacenter& echo [6] Windows Server 2008 R2 for Itanium-based Systems
 echo.
 
-choice /c 123456 /n /m "Enter your choice (1, 2, 3, 4, 5, 6): "
+choice /c 123456 /n /m "Enter the choice (1, 2, 3, 4, 5, 6): "
 if %errorlevel%==6 set "GVLKKey=%Server_Itanium_R2_2008%"& goto KMS
 if %errorlevel%==5 set "GVLKKey=%Server_Datacenter_R2_2008%"& goto KMS
 if %errorlevel%==4 set "GVLKKey=%Server_Enterprise_R2_2008%"& goto KMS
@@ -248,7 +249,7 @@ echo.
 echo [1] Windows Server 2012& echo [2] Windows Server 2012 N& echo [3] Windows Server 2012 Single Language& echo [4] Windows Server 2012 Country Specific& echo [5] Windows Server 2012 Standard& echo [6] Windows Server 2012 MultiPoint Standard& echo [7] Windows Server 2012 MultiPoint Premium& echo [8] Windows Server 2012 Datacenter& echo [9] Windows Server 2012 Essentials
 echo.
 
-choice /c 123456789 /n /m "Enter your choice (1, 2, 3, 4, 5, 6, 7, 8, 9): "
+choice /c 123456789 /n /m "Enter the choice (1, 2, 3, 4, 5, 6, 7, 8, 9): "
 if %errorlevel%==9 set "GVLKKey=%Server_Essentials_2012%"& goto KMS
 if %errorlevel%==8 set "GVLKKey=%Server_Datacenter_2012%"& goto KMS
 if %errorlevel%==7 set "GVLKKey=%Server_MP_Premium_2012%"& goto KMS
@@ -264,7 +265,7 @@ echo.
 echo [1] Windows Server 2012 R2 Standard& echo [2] Windows Server 2012 R2 Datacenter& echo [3] Windows Server 2012 R2 Essentials
 echo.
 
-choice /c 123 /n /m "Enter your choice (1, 2, 3): "
+choice /c 123 /n /m "Enter the choice (1, 2, 3): "
 if %errorlevel%==3 set "GVLKKey=%Server_Essentials_R2_2012%"& goto KMS
 if %errorlevel%==2 set "GVLKKey=%Server_Datacenter_R2_2012%"& goto KMS
 if %errorlevel%==1 set "GVLKKey=%Server_Standard_R2_2012%"& goto KMS
@@ -274,7 +275,7 @@ echo.
 echo [1] Windows Server Standard& echo [2] Windows Server Datacenter
 echo.
 
-choice /c 12 /n /m "Enter your choice (1, 2): "
+choice /c 12 /n /m "Enter the choice (1, 2): "
 if %errorlevel%==2 set "GVLKKey=%Server_Datacenter_1709%"& goto KMS
 if %errorlevel%==1 set "GVLKKey=%Server_Standard_1709%"& goto KMS
 
@@ -283,7 +284,7 @@ echo.
 echo [1] Windows Server Standard& echo [2] Windows Server Datacenter
 echo.
 
-choice /c 12 /n /m "Enter your choice (1, 2): "
+choice /c 12 /n /m "Enter the choice (1, 2): "
 if %errorlevel%==2 set "GVLKKey=%Server_Datacenter_1803%"& goto KMS
 if %errorlevel%==1 set "GVLKKey=%Server_Standard_1803%"& goto KMS
 
@@ -292,7 +293,7 @@ echo.
 echo [1] Windows Server 2016 Standard& echo [2] Windows Server 2016 Datacenter& echo [3] Windows Server 2016 Essentials
 echo.
 
-choice /c 123 /n /m "Enter your choice (1, 2, 3): "
+choice /c 123 /n /m "Enter the choice (1, 2, 3): "
 if %errorlevel%==3 set "GVLKKey=%Server_Essentials_2016%"& goto KMS
 if %errorlevel%==2 set "GVLKKey=%Server_Datacenter_2016%"& goto KMS
 if %errorlevel%==1 set "GVLKKey=%Server_Standard_2016%"& goto KMS
@@ -302,7 +303,7 @@ echo.
 echo [1] Windows Server 2019 Standard& echo [2] Windows Server 2019 Datacenter& echo [3] Windows Server 2019 Essentials
 echo.
 
-choice /c 123 /n /m "Enter your choice (1, 2, 3): "
+choice /c 123 /n /m "Enter the choice (1, 2, 3): "
 if %errorlevel%==3 set "GVLKKey=%Server_Essentials_2019%"& goto KMS
 if %errorlevel%==2 set "GVLKKey=%Server_Datacenter_2019%"& goto KMS
 if %errorlevel%==1 set "GVLKKey=%Server_Standard_2019%"& goto KMS
@@ -312,7 +313,7 @@ echo.
 echo [1] Windows Server 2022 Standard& echo [2] Windows Server 2022 Datacenter& echo [3] Windows Server 2022 Datacenter: Azure Edition
 echo.
 
-choice /c 123 /n /m "Enter your choice (1, 2, 3): "
+choice /c 123 /n /m "Enter the choice (1, 2, 3): "
 if %errorlevel%==3 set "GVLKKey=%Server_Essentials_2022%"& goto KMS
 if %errorlevel%==2 set "GVLKKey=%Server_Datacenter_2022%"& goto KMS
 if %errorlevel%==1 set "GVLKKey=%Server_Standard_2022%"& goto KMS
@@ -322,7 +323,7 @@ echo.
 echo [1] Windows Server 2025 Standard& echo [2] Windows Server 2025 Datacenter& echo [3] Windows Server 2025 Datacenter: Azure Edition
 echo.
 
-choice /c 123 /n /m "Enter your choice (1, 2, 3): "
+choice /c 123 /n /m "Enter the choice (1, 2, 3): "
 if %errorlevel%==3 set "GVLKKey=%Server_Essentials_2025%"& goto KMS
 if %errorlevel%==2 set "GVLKKey=%Server_Datacenter_2025%"& goto KMS
 if %errorlevel%==1 set "GVLKKey=%Server_Standard_2025%"& goto KMS
