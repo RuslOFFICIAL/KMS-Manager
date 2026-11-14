@@ -1,6 +1,5 @@
 # Directories.
-Configs/
-!Configs/*
+Configs/*
 
 # Files.
 *.env
