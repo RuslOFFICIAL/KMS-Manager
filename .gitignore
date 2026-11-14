@@ -1,3 +1,13 @@
+# Directories.
+Configs/
+!Configs/*
+
 # Files.
-*.lnk
 *.env
+*.env.*
+*.lnk
+
+!*.example
+
+!Configs/KMS-Keys.conf
+!Configs/Variables.conf
